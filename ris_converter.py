@@ -124,9 +124,16 @@ def main(): # pylint: disable=R0914
         ris_id = {0}
         ris_data = {1}
               """.format(ris_id, ris_data))
-        if ris_id == "ER":
+        if ris_id == "AU":
+            row_au_values.append(ris_data) # Append "AU" value to the list
+        elif ris_id == "ER":
+            # Assign the "AU" values to the "Author" column
+            row[column_num["AU"]] = ', '.join(row_au_values)
             writer.writerow(row)
             row = blank_row()
+            row_au_values = [] # Reset the "AU" values list for the next row
+        else:
+            row[column_num[ris_id]] = ris_data
     csv_file.close()
     print("""
     Conversion process complete. 
